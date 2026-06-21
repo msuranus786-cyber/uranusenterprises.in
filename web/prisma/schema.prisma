@@ -1,0 +1,142 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ──────────────────────────────────────────────
+// Site configuration (singleton row, id = 1)
+// ──────────────────────────────────────────────
+
+model SiteSettings {
+  id               Int      @id @default(1)
+  name             String   @default("Uranus Enterprise")
+  brand            String   @default("Ms.Uranus Nanofix")
+  owner            String   @default("Mr. Barath")
+  city             String   @default("Chennai")
+  tagline          String   @default("Chennai's Trusted Technology & Security Partner")
+  phoneDisplay     String   @default("+91 98765 43210")
+  whatsappNumber   String   @default("919876543210")
+  email            String   @default("support@shan.enterprises")
+  address          String   @default("Chennai, Tamil Nadu, India")
+  hours            String   @default("Mon – Sat · 9:30 AM – 8:00 PM")
+  yearsExperience  Int      @default(10)
+  customers        Int      @default(100)
+  projects         Int      @default(250)
+  updatedAt        DateTime @updatedAt
+
+  @@map("site_settings")
+}
+
+// ──────────────────────────────────────────────
+// Services
+// ──────────────────────────────────────────────
+
+model Service {
+  id            Int       @id @default(autoincrement())
+  slug          String    @unique
+  title         String
+  category      String
+  icon          String
+  gradient      String
+  tagline       String
+  description   String
+  startingPrice Int
+  available     Boolean   @default(true)
+  features      String[]
+  offerings     String[]
+  sortOrder     Int       @default(0)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  packages  Package[]
+  reviews   Review[]
+  enquiries Enquiry[]
+
+  @@map("services")
+}
+
+// ──────────────────────────────────────────────
+// Packages (CCTV tiers, etc.)
+// ──────────────────────────────────────────────
+
+model Package {
+  id           Int      @id @default(autoincrement())
+  name         String
+  cameras      String
+  recorder     String
+  storage      String
+  installation String   @default("Included")
+  warranty     String
+  price        Int
+  popular      Boolean  @default(false)
+  features     String[]
+  sortOrder    Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  service      Service  @relation(fields: [serviceSlug], references: [slug])
+  serviceSlug  String
+
+  @@map("packages")
+}
+
+// ──────────────────────────────────────────────
+// Customer reviews
+// ──────────────────────────────────────────────
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  name      String
+  location  String
+  rating    Int
+  comment   String
+  approved  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  service     Service @relation(fields: [serviceSlug], references: [slug])
+  serviceSlug String
+
+  @@map("reviews")
+}
+
+// ──────────────────────────────────────────────
+// Admin users (for the admin portal)
+// ──────────────────────────────────────────────
+
+model AdminUser {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         String   @default("admin")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("admin_users")
+}
+
+// ──────────────────────────────────────────────
+// Enquiries (log of WhatsApp enquiries)
+// ──────────────────────────────────────────────
+
+model Enquiry {
+  id          Int      @id @default(autoincrement())
+  customerName String
+  phone       String
+  email       String?
+  location    String?
+  requirement String?
+  status      String   @default("new")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  service     Service? @relation(fields: [serviceSlug], references: [slug])
+  serviceSlug String?
+
+  @@map("enquiries")
+}
