@@ -35,7 +35,7 @@ export default async function AdminReviewsPage() {
                       <span className="text-xs text-slate-400">·</span>
                       <span className="text-xs text-slate-500">{r.location}</span>
                     </div>
-                    <p className="mt-1 text-sm text-slate-600">"{r.comment}"</p>
+                    <p className="mt-1 text-sm text-slate-600">&quot;{r.comment}&quot;</p>
                     <div className="mt-2 flex items-center gap-3 text-xs text-slate-400">
                       <span>{"★".repeat(r.rating)}{"☆".repeat(5 - r.rating)}</span>
                       <span>{r.service.title}</span>
@@ -63,7 +63,7 @@ export default async function AdminReviewsPage() {
                     <span className="text-xs text-slate-400">·</span>
                     <span className="text-xs text-slate-500">{r.location}</span>
                   </div>
-                  <p className="mt-1 text-sm text-slate-600">"{r.comment}"</p>
+                  <p className="mt-1 text-sm text-slate-600">&quot;{r.comment}&quot;</p>
                   <div className="mt-2 flex items-center gap-3 text-xs text-slate-400">
                     <span>{"★".repeat(r.rating)}{"☆".repeat(5 - r.rating)}</span>
                     <span>{r.service.title}</span>

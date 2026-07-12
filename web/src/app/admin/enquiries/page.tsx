@@ -37,7 +37,7 @@ export default async function AdminEnquiriesPage() {
             {enquiries.length === 0 && (
               <tr>
                 <td colSpan={6} className="px-4 py-8 text-center text-slate-400">
-                  No enquiries yet. They'll appear here when customers submit the contact form.
+                  No enquiries yet. They&apos;ll appear here when customers submit the contact form.
                 </td>
               </tr>
             )}
