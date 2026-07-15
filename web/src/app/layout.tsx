@@ -4,7 +4,17 @@ import "./globals.css";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { FloatingWidgets } from "@/components/floating-widgets";
+import { Analytics } from "@/components/analytics";
+import { JsonLd } from "@/components/json-ld";
+import { localBusinessSchema } from "@/lib/schema";
+import { siteUrl } from "@/lib/site-url";
 import { site } from "@/lib/data";
+import {
+  getSiteSettings,
+  getServices,
+  getAllPackages,
+  getAllReviews,
+} from "@/lib/db";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -13,7 +23,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.msuranus.in"),
+  metadataBase: new URL(siteUrl),
   title: {
     default: `${site.name} — CCTV, Biometric & Smart Tech in ${site.city}`,
     template: `%s · ${site.name}`,
@@ -27,25 +37,46 @@ export const metadata: Metadata = {
     "home automation Chennai",
     "UPS installation Chennai",
   ],
+  alternates: { canonical: "/" },
   openGraph: {
     title: `${site.name} — ${site.tagline}`,
     description:
       "CCTV, biometric, computer service, networking and home automation in Chennai.",
     type: "website",
     locale: "en_IN",
+    url: siteUrl,
+    siteName: site.name,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${site.name} — ${site.tagline}`,
+    description:
+      "CCTV, biometric, computer service, networking and home automation in Chennai.",
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const [settings, services, packages, reviews] = await Promise.all([
+    getSiteSettings(),
+    getServices(),
+    getAllPackages(),
+    getAllReviews(),
+  ]);
+
   return (
     <html lang="en" className={`${inter.variable} h-full`}>
       <body className="flex min-h-full flex-col bg-white antialiased">
-        <Navbar />
+        <JsonLd data={localBusinessSchema(settings, reviews)} />
+        <Navbar
+          whatsappNumber={settings.whatsappNumber}
+          phoneDisplay={settings.phoneDisplay}
+        />
         <main className="flex-1">{children}</main>
         <Footer />
-        <FloatingWidgets />
+        <FloatingWidgets site={settings} services={services} packages={packages} />
+        <Analytics />
       </body>
     </html>
   );

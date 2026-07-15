@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { requireAdminPage } from "@/lib/auth";
 import { DeleteButton } from "../components";
 
 export default async function AdminPackagesPage() {
+  await requireAdminPage();
   const packages = await prisma.package.findMany({
     orderBy: { sortOrder: "asc" },
     include: { service: { select: { title: true } } },

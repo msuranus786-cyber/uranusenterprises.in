@@ -3,14 +3,29 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
-import { authenticate, logout, getSession } from "@/lib/auth";
+import { authenticate, logout, requireAdmin } from "@/lib/auth";
+import {
+  loginSchema,
+  serviceSchema,
+  packageSchema,
+  settingsSchema,
+  enquiryStatusSchema,
+} from "@/lib/validation";
+import { allowLogin } from "@/lib/rate-limit";
 
 // ─── Auth ──────────────────────────────────────────────
 
 export async function loginAction(form: FormData) {
-  const email = form.get("email") as string;
-  const password = form.get("password") as string;
-  const user = await authenticate(email, password);
+  if (!(await allowLogin())) {
+    return { error: "Too many attempts. Please wait 15 minutes and try again." };
+  }
+  const parsed = loginSchema.safeParse({
+    email: form.get("email"),
+    password: form.get("password"),
+  });
+  if (!parsed.success) return { error: "Invalid email or password" };
+
+  const user = await authenticate(parsed.data.email, parsed.data.password);
   if (!user) return { error: "Invalid email or password" };
   return { success: true };
 }
@@ -48,20 +63,20 @@ export async function deleteService(id: number) {
 }
 
 function parseServiceForm(form: FormData) {
-  return {
-    title: form.get("title") as string,
-    slug: form.get("slug") as string,
-    category: form.get("category") as string,
-    icon: form.get("icon") as string,
-    gradient: form.get("gradient") as string,
-    tagline: form.get("tagline") as string,
-    description: form.get("description") as string,
+  return serviceSchema.parse({
+    title: form.get("title"),
+    slug: form.get("slug"),
+    category: form.get("category"),
+    icon: form.get("icon"),
+    gradient: form.get("gradient"),
+    tagline: form.get("tagline"),
+    description: form.get("description"),
     startingPrice: Number(form.get("startingPrice")),
     available: form.get("available") === "on",
     features: splitLines(form.get("features") as string),
     offerings: splitLines(form.get("offerings") as string),
     sortOrder: Number(form.get("sortOrder") || 0),
-  };
+  });
 }
 
 // ─── Packages ──────────────────────────────────────────
@@ -92,19 +107,19 @@ export async function deletePackage(id: number) {
 }
 
 function parsePackageForm(form: FormData) {
-  return {
-    name: form.get("name") as string,
-    serviceSlug: form.get("serviceSlug") as string,
-    cameras: form.get("cameras") as string,
-    recorder: form.get("recorder") as string,
-    storage: form.get("storage") as string,
-    installation: form.get("installation") as string || "Included",
-    warranty: form.get("warranty") as string,
+  return packageSchema.parse({
+    name: form.get("name"),
+    serviceSlug: form.get("serviceSlug"),
+    cameras: form.get("cameras"),
+    recorder: form.get("recorder"),
+    storage: form.get("storage"),
+    installation: (form.get("installation") as string) || "Included",
+    warranty: form.get("warranty"),
     price: Number(form.get("price")),
     popular: form.get("popular") === "on",
     features: splitLines(form.get("features") as string),
     sortOrder: Number(form.get("sortOrder") || 0),
-  };
+  });
 }
 
 // ─── Reviews ───────────────────────────────────────────
@@ -134,7 +149,8 @@ export async function deleteReview(id: number) {
 
 export async function updateEnquiryStatus(id: number, status: string) {
   await requireAdmin();
-  await prisma.enquiry.update({ where: { id }, data: { status } });
+  const parsed = enquiryStatusSchema.parse(status);
+  await prisma.enquiry.update({ where: { id }, data: { status: parsed } });
   revalidatePath("/admin/enquiries");
 }
 
@@ -148,41 +164,28 @@ export async function deleteEnquiry(id: number) {
 
 export async function updateSettings(form: FormData) {
   await requireAdmin();
+  const data = settingsSchema.parse({
+    name: form.get("name"),
+    brand: form.get("brand"),
+    owner: form.get("owner"),
+    city: form.get("city"),
+    tagline: form.get("tagline"),
+    phoneDisplay: form.get("phoneDisplay"),
+    whatsappNumber: form.get("whatsappNumber"),
+    email: form.get("email"),
+    address: form.get("address"),
+    hours: form.get("hours"),
+    yearsExperience: Number(form.get("yearsExperience")),
+    customers: Number(form.get("customers")),
+    projects: Number(form.get("projects")),
+  });
   await prisma.siteSettings.upsert({
     where: { id: 1 },
-    update: {
-      name: form.get("name") as string,
-      brand: form.get("brand") as string,
-      owner: form.get("owner") as string,
-      city: form.get("city") as string,
-      tagline: form.get("tagline") as string,
-      phoneDisplay: form.get("phoneDisplay") as string,
-      whatsappNumber: form.get("whatsappNumber") as string,
-      email: form.get("email") as string,
-      address: form.get("address") as string,
-      hours: form.get("hours") as string,
-      yearsExperience: Number(form.get("yearsExperience")),
-      customers: Number(form.get("customers")),
-      projects: Number(form.get("projects")),
-    },
-    create: {
-      name: form.get("name") as string,
-      brand: form.get("brand") as string,
-      owner: form.get("owner") as string,
-      city: form.get("city") as string,
-      tagline: form.get("tagline") as string,
-      phoneDisplay: form.get("phoneDisplay") as string,
-      whatsappNumber: form.get("whatsappNumber") as string,
-      email: form.get("email") as string,
-      address: form.get("address") as string,
-      hours: form.get("hours") as string,
-      yearsExperience: Number(form.get("yearsExperience")),
-      customers: Number(form.get("customers")),
-      projects: Number(form.get("projects")),
-    },
+    update: data,
+    create: data,
   });
   revalidatePath("/admin/settings");
-  revalidatePath("/");
+  revalidatePath("/", "layout");
 }
 
 // ─── Helpers ───────────────────────────────────────────
@@ -192,9 +195,4 @@ function splitLines(text: string): string[] {
     .split("\n")
     .map((l) => l.trim())
     .filter(Boolean);
-}
-
-async function requireAdmin() {
-  const session = await getSession();
-  if (!session) throw new Error("Unauthorized");
 }

@@ -5,17 +5,25 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { whatsappLink } from "@/lib/whatsapp";
-import { ArrowRightIcon, MenuIcon, CloseIcon, WhatsAppIcon } from "./icons";
+import { ArrowRightIcon, MenuIcon, CloseIcon, WhatsAppIcon, PhoneIcon } from "./icons";
 
 const links = [
   { href: "/", label: "Home" },
   { href: "/services", label: "Services" },
+  { href: "/faq", label: "FAQ" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
 
-export function Navbar() {
+export function Navbar({
+  whatsappNumber,
+  phoneDisplay,
+}: {
+  whatsappNumber: string;
+  phoneDisplay: string;
+}) {
   const pathname = usePathname();
+  const telHref = `tel:${phoneDisplay.replace(/[^0-9+]/g, "")}`;
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -85,7 +93,15 @@ export function Navbar() {
 
         <div className="flex items-center gap-2">
           <a
-            href={whatsappLink()}
+            href={telHref}
+            aria-label={`Call ${phoneDisplay}`}
+            className="hidden items-center gap-2 rounded-full border border-brand-200 px-4 py-2.5 text-sm font-semibold text-brand-700 transition-all hover:border-brand-300 hover:bg-brand-50 active:scale-95 lg:inline-flex"
+          >
+            <PhoneIcon className="h-4 w-4" />
+            {phoneDisplay}
+          </a>
+          <a
+            href={whatsappLink({}, whatsappNumber)}
             target="_blank"
             rel="noopener noreferrer"
             className="hidden items-center gap-2 rounded-full bg-whatsapp px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-whatsapp-dark hover:shadow-md active:scale-95 sm:inline-flex"
@@ -127,7 +143,14 @@ export function Navbar() {
             </Link>
           ))}
           <a
-            href={whatsappLink()}
+            href={telHref}
+            className="mt-2 flex items-center justify-center gap-2 rounded-xl border border-brand-200 px-4 py-3 text-base font-semibold text-brand-700"
+          >
+            <PhoneIcon className="h-5 w-5" />
+            Call {phoneDisplay}
+          </a>
+          <a
+            href={whatsappLink({}, whatsappNumber)}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-2 flex items-center justify-center gap-2 rounded-xl bg-whatsapp px-4 py-3 text-base font-semibold text-white"

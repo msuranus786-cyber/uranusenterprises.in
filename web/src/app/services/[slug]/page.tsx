@@ -2,8 +2,20 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { inr } from "@/lib/data";
-import { getService, getServices, getPackages, getReviews } from "@/lib/db";
+import {
+  getService,
+  getServices,
+  getPackages,
+  getReviews,
+  getSiteSettings,
+} from "@/lib/db";
 import { whatsappLink } from "@/lib/whatsapp";
+import { JsonLd } from "@/components/json-ld";
+import {
+  serviceSchema,
+  breadcrumbSchema,
+  packageProductSchema,
+} from "@/lib/schema";
 import { PageHeader } from "@/components/page-header";
 import { PackageCard } from "@/components/package-card";
 import { ReviewCard, Stars } from "@/components/review-card";
@@ -26,6 +38,7 @@ export async function generateMetadata(
   return {
     title: service.title,
     description: `${service.tagline} ${service.description}`,
+    alternates: { canonical: `/services/${slug}` },
   };
 }
 
@@ -36,17 +49,29 @@ export default async function ServiceDetailPage(
   const service = await getService(slug);
   if (!service) notFound();
 
-  const [pkgs, serviceReviews, allServices] = await Promise.all([
+  const [pkgs, serviceReviews, allServices, site] = await Promise.all([
     getPackages(slug),
     getReviews(slug),
     getServices(),
+    getSiteSettings(),
   ]);
 
   const related = allServices.filter((s) => s.slug !== slug).slice(0, 3);
-  const cta = whatsappLink({ service: service.title });
+  const cta = whatsappLink({ service: service.title }, site.whatsappNumber);
 
   return (
     <>
+      <JsonLd data={serviceSchema(service, site)} />
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Services", path: "/services" },
+          { name: service.title, path: `/services/${slug}` },
+        ])}
+      />
+      {pkgs.map((p) => (
+        <JsonLd key={p.name} data={packageProductSchema(p, site)} />
+      ))}
       <PageHeader
         crumbs={[{ label: "Services", href: "/services" }, { label: service.title }]}
         title={service.title}
@@ -157,7 +182,11 @@ export default async function ServiceDetailPage(
             <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {pkgs.map((p, i) => (
                 <Reveal key={p.name} delay={(i % 4) * 80}>
-                  <PackageCard pkg={p} serviceTitle={service.title} />
+                  <PackageCard
+                    pkg={p}
+                    serviceTitle={service.title}
+                    whatsappNumber={site.whatsappNumber}
+                  />
                 </Reveal>
               ))}
             </div>

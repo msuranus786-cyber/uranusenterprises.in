@@ -1,24 +1,31 @@
 import type { MetadataRoute } from "next";
 import { getServices } from "@/lib/db";
-
-const base = "https://www.msuranus.in";
+import { areas } from "@/lib/areas";
+import { siteUrl } from "@/lib/site-url";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const services = await getServices();
 
-  const routes = ["", "/services", "/about", "/contact"].map((path) => ({
-    url: `${base}${path}`,
+  const routes = ["", "/services", "/faq", "/areas", "/about", "/contact"].map((path) => ({
+    url: `${siteUrl}${path}`,
     lastModified: new Date(),
     changeFrequency: "monthly" as const,
     priority: path === "" ? 1 : 0.8,
   }));
 
   const serviceRoutes = services.map((s) => ({
-    url: `${base}/services/${s.slug}`,
+    url: `${siteUrl}/services/${s.slug}`,
     lastModified: new Date(),
     changeFrequency: "monthly" as const,
     priority: 0.7,
   }));
 
-  return [...routes, ...serviceRoutes];
+  const areaRoutes = areas.map((a) => ({
+    url: `${siteUrl}/areas/${a.slug}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly" as const,
+    priority: 0.6,
+  }));
+
+  return [...routes, ...serviceRoutes, ...areaRoutes];
 }

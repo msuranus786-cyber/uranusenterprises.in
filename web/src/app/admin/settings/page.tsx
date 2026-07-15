@@ -1,7 +1,9 @@
 import { prisma } from "@/lib/prisma";
+import { requireAdminPage } from "@/lib/auth";
 import { SettingsForm } from "./settings-form";
 
 export default async function AdminSettingsPage() {
+  await requireAdminPage();
   const settings = await prisma.siteSettings.findFirst();
 
   return (

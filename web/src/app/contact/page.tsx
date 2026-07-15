@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getSiteSettings } from "@/lib/db";
+import { getSiteSettings, getServices } from "@/lib/db";
 import { whatsappLink } from "@/lib/whatsapp";
 import { PageHeader } from "@/components/page-header";
 import { EnquiryForm } from "@/components/enquiry-form";
@@ -16,10 +16,11 @@ export const metadata: Metadata = {
   title: "Contact Us",
   description:
     "Get in touch with Uranus Enterprise in Chennai for CCTV, biometric, computer service, networking and home automation. Enquire on WhatsApp.",
+  alternates: { canonical: "/contact" },
 };
 
 export default async function ContactPage() {
-  const site = await getSiteSettings();
+  const [site, services] = await Promise.all([getSiteSettings(), getServices()]);
 
   const details = [
     { icon: PhoneIcon, label: "Phone", value: site.phoneDisplay },
@@ -46,7 +47,10 @@ export default async function ContactPage() {
                 Fill in a few details — it takes less than a minute.
               </p>
               <div className="mt-6">
-                <EnquiryForm />
+                <EnquiryForm
+                  services={services}
+                  whatsappNumber={site.whatsappNumber}
+                />
               </div>
             </div>
           </Reveal>
@@ -80,7 +84,7 @@ export default async function ContactPage() {
                   working hours.
                 </p>
                 <a
-                  href={whatsappLink()}
+                  href={whatsappLink({}, site.whatsappNumber)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-5 inline-flex items-center gap-2 rounded-xl bg-whatsapp px-5 py-3 text-sm font-semibold text-white transition-all hover:bg-whatsapp-dark active:scale-95"

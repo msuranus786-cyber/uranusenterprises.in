@@ -1,9 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { jwtVerify } from "jose";
-
-const secret = new TextEncoder().encode(
-  process.env.ADMIN_SECRET || "uranus-admin-secret-change-in-production",
-);
+import { getAdminSecret } from "@/lib/secret";
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -16,7 +13,7 @@ export async function proxy(request: NextRequest) {
   }
 
   try {
-    await jwtVerify(token, secret);
+    await jwtVerify(token, getAdminSecret());
     return NextResponse.next();
   } catch {
     return NextResponse.redirect(new URL("/admin/login", request.url));

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { getSiteSettings, getServices } from "@/lib/db";
+import { areas } from "@/lib/areas";
 import { whatsappLink } from "@/lib/whatsapp";
 import {
   MapPinIcon,
@@ -38,7 +39,7 @@ export async function Footer() {
               networking and home automation solutions.
             </p>
             <a
-              href={whatsappLink()}
+              href={whatsappLink({}, site.whatsappNumber)}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-5 inline-flex items-center gap-2 rounded-full bg-whatsapp px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-whatsapp-dark"
@@ -81,6 +82,9 @@ export async function Footer() {
                 <Link href="/about" className="text-slate-400 hover:text-white">About Us</Link>
               </li>
               <li>
+                <Link href="/faq" className="text-slate-400 hover:text-white">FAQ</Link>
+              </li>
+              <li>
                 <Link href="/contact" className="text-slate-400 hover:text-white">Contact</Link>
               </li>
             </ul>
@@ -97,11 +101,21 @@ export async function Footer() {
               </li>
               <li className="flex items-center gap-2.5">
                 <PhoneIcon className="h-4 w-4 shrink-0 text-brand-300" />
-                <span className="text-slate-400">{site.phoneDisplay}</span>
+                <a
+                  href={`tel:${site.phoneDisplay.replace(/[^0-9+]/g, "")}`}
+                  className="text-slate-400 transition-colors hover:text-white"
+                >
+                  {site.phoneDisplay}
+                </a>
               </li>
               <li className="flex items-center gap-2.5">
                 <MailIcon className="h-4 w-4 shrink-0 text-brand-300" />
-                <span className="text-slate-400">{site.email}</span>
+                <a
+                  href={`mailto:${site.email}`}
+                  className="text-slate-400 transition-colors hover:text-white"
+                >
+                  {site.email}
+                </a>
               </li>
               <li className="flex items-center gap-2.5">
                 <ClockIcon className="h-4 w-4 shrink-0 text-brand-300" />
@@ -111,7 +125,25 @@ export async function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-6 text-xs text-slate-500 sm:flex-row">
+        <div className="mt-12 border-t border-white/10 pt-8">
+          <h3 className="text-sm font-semibold uppercase tracking-wider text-white">
+            Areas we serve
+          </h3>
+          <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+            {areas.map((a) => (
+              <li key={a.slug}>
+                <Link
+                  href={`/areas/${a.slug}`}
+                  className="text-slate-400 transition-colors hover:text-white"
+                >
+                  {a.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-6 text-xs text-slate-500 sm:flex-row">
           <p>© {new Date().getFullYear()} {site.name}. All rights reserved.</p>
           <p>Designed &amp; built for {site.owner}.</p>
         </div>

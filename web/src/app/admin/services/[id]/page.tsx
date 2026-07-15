@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { requireAdminPage } from "@/lib/auth";
 import { ServiceForm } from "../service-form";
 
 export default async function EditServicePage(props: PageProps<"/admin/services/[id]">) {
+  await requireAdminPage();
   const { id } = await props.params;
   const service = await prisma.service.findUnique({ where: { id: Number(id) } });
   if (!service) notFound();

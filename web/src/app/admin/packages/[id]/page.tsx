@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { requireAdminPage } from "@/lib/auth";
 import { PackageForm } from "../package-form";
 
 export default async function EditPackagePage(props: PageProps<"/admin/packages/[id]">) {
+  await requireAdminPage();
   const { id } = await props.params;
   const [pkg, services] = await Promise.all([
     prisma.package.findUnique({ where: { id: Number(id) } }),

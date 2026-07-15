@@ -1,15 +1,22 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { services, packages, inr, site } from "@/lib/data";
+import { inr } from "@/lib/data";
+import type { SiteSettings, Service, Package } from "@/lib/data";
 import { whatsappLink, buildEnquiryMessage } from "@/lib/whatsapp";
 import { WhatsAppIcon, ChatIcon, CloseIcon, ArrowRightIcon } from "./icons";
 
 type Msg = { from: "bot" | "user"; text: string };
 
+type BotContext = {
+  site: SiteSettings;
+  services: Service[];
+  packages: Package[];
+};
+
 const QUICK_REPLIES = ["What services do you offer?", "CCTV packages", "Pricing", "Talk to a human"];
 
-function botReply(input: string): string {
+function botReply(input: string, { site, services, packages }: BotContext): string {
   const q = input.toLowerCase();
 
   if (/(hi|hello|hey|vanakkam)/.test(q)) {
@@ -58,7 +65,7 @@ function botReply(input: string): string {
   return "I'll connect you with our team for that. 🙌 Tap “Talk to us on WhatsApp” below and we'll help you right away.";
 }
 
-export function FloatingWidgets() {
+export function FloatingWidgets({ site, services, packages }: BotContext) {
   const [chatOpen, setChatOpen] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([
     {
@@ -80,7 +87,10 @@ export function FloatingWidgets() {
     setMessages((m) => [...m, { from: "user", text: clean }]);
     // Tiny delay so the reply feels conversational.
     setTimeout(() => {
-      setMessages((m) => [...m, { from: "bot", text: botReply(clean) }]);
+      setMessages((m) => [
+        ...m,
+        { from: "bot", text: botReply(clean, { site, services, packages }) },
+      ]);
     }, 350);
   };
 
@@ -88,11 +98,14 @@ export function FloatingWidgets() {
     const history = messages
       .map((m) => `${m.from === "bot" ? "Bot" : "Me"}: ${m.text}`)
       .join("\n");
-    return whatsappLink({
-      requirement: buildEnquiryMessage().includes("Requirement")
-        ? `Continuing my chat:\n${history}`
-        : history,
-    });
+    return whatsappLink(
+      {
+        requirement: buildEnquiryMessage().includes("Requirement")
+          ? `Continuing my chat:\n${history}`
+          : history,
+      },
+      site.whatsappNumber,
+    );
   };
 
   return (
@@ -164,6 +177,7 @@ export function FloatingWidgets() {
               href={escalationLink()}
               target="_blank"
               rel="noopener noreferrer"
+              data-analytics="chatbot_escalation"
               className="mb-2 flex items-center justify-center gap-2 rounded-xl bg-whatsapp px-3 py-2 text-xs font-semibold text-white transition-colors hover:bg-whatsapp-dark"
             >
               <WhatsAppIcon className="h-4 w-4" />
@@ -204,7 +218,7 @@ export function FloatingWidgets() {
           {chatOpen ? <CloseIcon className="h-6 w-6" /> : <ChatIcon className="h-6 w-6" />}
         </button>
         <a
-          href={whatsappLink()}
+          href={whatsappLink({}, site.whatsappNumber)}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Chat on WhatsApp"

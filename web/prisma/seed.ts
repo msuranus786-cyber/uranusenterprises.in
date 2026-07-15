@@ -9,12 +9,19 @@ const adapter = new PrismaPg({
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
-  // Admin user
-  const adminEmail = "admin@uranus.in";
-  const adminPassword = await bcrypt.hash("admin123", 12);
+  // Admin user — password must come from the environment; never hardcode or log it.
+  const adminEmail = process.env.ADMIN_SEED_EMAIL || "admin@uranus.in";
+  const rawPassword = process.env.ADMIN_SEED_PASSWORD;
+  if (!rawPassword || rawPassword.length < 10) {
+    throw new Error(
+      "Set ADMIN_SEED_PASSWORD (min 10 characters) in .env before seeding. " +
+        "Example: ADMIN_SEED_PASSWORD=\"a-long-unique-passphrase\"",
+    );
+  }
+  const adminPassword = await bcrypt.hash(rawPassword, 12);
   await prisma.adminUser.upsert({
     where: { email: adminEmail },
-    update: {},
+    update: { passwordHash: adminPassword },
     create: {
       email: adminEmail,
       passwordHash: adminPassword,
@@ -22,7 +29,7 @@ async function main() {
       role: "admin",
     },
   });
-  console.log("Admin user: admin@uranus.in / admin123");
+  console.log(`Admin user ready: ${adminEmail}`);
 
   // Site settings (upsert singleton)
   await prisma.siteSettings.upsert({

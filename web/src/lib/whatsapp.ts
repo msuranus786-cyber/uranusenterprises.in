@@ -27,8 +27,13 @@ export function buildEnquiryMessage(parts: EnquiryParts = {}): string {
   return lines.join("\n");
 }
 
-/** wa.me deep link with the pre-filled message. */
-export function whatsappLink(parts: EnquiryParts = {}): string {
+/** wa.me deep link with the pre-filled message.
+ *  Pass the number from SiteSettings (DB) wherever it is available so admin
+ *  edits take effect; the static fallback is only for DB-less rendering. */
+export function whatsappLink(
+  parts: EnquiryParts = {},
+  whatsappNumber: string = site.whatsappNumber,
+): string {
   const text = encodeURIComponent(buildEnquiryMessage(parts));
-  return `https://wa.me/${site.whatsappNumber}?text=${text}`;
+  return `https://wa.me/${whatsappNumber}?text=${text}`;
 }

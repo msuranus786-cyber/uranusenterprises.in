@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { requireAdminPage } from "@/lib/auth";
 import { EnquiryActions } from "./enquiry-actions";
 
 const statusColors: Record<string, string> = {
@@ -9,6 +10,7 @@ const statusColors: Record<string, string> = {
 };
 
 export default async function AdminEnquiriesPage() {
+  await requireAdminPage();
   const enquiries = await prisma.enquiry.findMany({
     orderBy: { createdAt: "desc" },
     include: { service: { select: { title: true } } },

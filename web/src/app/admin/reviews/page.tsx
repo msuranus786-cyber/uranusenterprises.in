@@ -1,7 +1,9 @@
 import { prisma } from "@/lib/prisma";
+import { requireAdminPage } from "@/lib/auth";
 import { ReviewActions } from "./review-actions";
 
 export default async function AdminReviewsPage() {
+  await requireAdminPage();
   const reviews = await prisma.review.findMany({
     orderBy: { createdAt: "desc" },
     include: { service: { select: { title: true } } },

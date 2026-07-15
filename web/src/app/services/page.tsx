@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   title: "Our Services",
   description:
     "CCTV installation, biometric access control, computer & laptop service, networking, UPS and home automation in Chennai.",
+  alternates: { canonical: "/services" },
 };
 
 export default async function ServicesPage() {
@@ -46,7 +47,7 @@ export default async function ServicesPage() {
               </p>
             </div>
             <a
-              href={whatsappLink()}
+              href={whatsappLink({}, site.whatsappNumber)}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-whatsapp px-6 py-3.5 text-base font-semibold text-white transition-all hover:bg-whatsapp-dark active:scale-95"

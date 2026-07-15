@@ -92,7 +92,7 @@ export default async function HomePage() {
             <Reveal delay={240}>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <a
-                  href={whatsappLink()}
+                  href={whatsappLink({}, site.whatsappNumber)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2 rounded-xl bg-whatsapp px-6 py-3.5 text-base font-semibold text-white shadow-lg shadow-green-500/20 transition-all hover:bg-whatsapp-dark hover:shadow-xl active:scale-95"
@@ -199,7 +199,11 @@ export default async function HomePage() {
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {packages.map((p, i) => (
               <Reveal key={p.name} delay={(i % 4) * 80}>
-                <PackageCard pkg={p} serviceTitle="CCTV Installation" />
+                <PackageCard
+                  pkg={p}
+                  serviceTitle="CCTV Installation"
+                  whatsappNumber={site.whatsappNumber}
+                />
               </Reveal>
             ))}
           </div>
@@ -216,7 +220,7 @@ export default async function HomePage() {
               subtitle="We&apos;re not just installers — we&apos;re your long-term technology partner. Here&apos;s what makes customers across Chennai recommend us."
             />
             <a
-              href={whatsappLink()}
+              href={whatsappLink({}, site.whatsappNumber)}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-8 inline-flex items-center gap-2 rounded-xl bg-brand-700 px-6 py-3.5 text-base font-semibold text-white transition-all hover:bg-brand-800 active:scale-95"
@@ -286,7 +290,7 @@ export default async function HomePage() {
               </p>
               <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
                 <a
-                  href={whatsappLink()}
+                  href={whatsappLink({}, site.whatsappNumber)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2 rounded-xl bg-whatsapp px-6 py-3.5 text-base font-semibold text-white shadow-lg transition-all hover:bg-whatsapp-dark active:scale-95"

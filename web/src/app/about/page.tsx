@@ -15,6 +15,7 @@ export const metadata: Metadata = {
   title: "About Us",
   description:
     "Uranus Enterprise is a Chennai-based technology and security company offering CCTV, biometric, computer service, networking and home automation.",
+  alternates: { canonical: "/about" },
 };
 
 const values = [
@@ -59,7 +60,7 @@ export default async function AboutPage() {
               </p>
             </div>
             <a
-              href={whatsappLink()}
+              href={whatsappLink({}, site.whatsappNumber)}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-7 inline-flex items-center gap-2 rounded-xl bg-whatsapp px-6 py-3.5 text-base font-semibold text-white transition-all hover:bg-whatsapp-dark active:scale-95"

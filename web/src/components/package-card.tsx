@@ -6,9 +6,11 @@ import { CheckIcon, WhatsAppIcon } from "./icons";
 export function PackageCard({
   pkg,
   serviceTitle,
+  whatsappNumber,
 }: {
   pkg: Package;
   serviceTitle: string;
+  whatsappNumber?: string;
 }) {
   return (
     <div
@@ -41,7 +43,10 @@ export function PackageCard({
       </ul>
 
       <a
-        href={whatsappLink({ service: serviceTitle, packageName: `${pkg.name} CCTV Package` })}
+        href={whatsappLink(
+          { service: serviceTitle, packageName: `${pkg.name} CCTV Package` },
+          whatsappNumber,
+        )}
         target="_blank"
         rel="noopener noreferrer"
         className={`mt-6 inline-flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold transition-all active:scale-95 ${

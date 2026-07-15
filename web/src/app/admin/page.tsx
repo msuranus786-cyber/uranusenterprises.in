@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { requireAdminPage } from "@/lib/auth";
 
 async function getStats() {
   const [services, packages, reviews, pendingReviews, enquiries, newEnquiries] =
@@ -15,6 +16,7 @@ async function getStats() {
 }
 
 export default async function AdminDashboard() {
+  await requireAdminPage();
   const stats = await getStats();
 
   const cards = [

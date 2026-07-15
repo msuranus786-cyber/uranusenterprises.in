@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { requireAdminPage } from "@/lib/auth";
 import { PackageForm } from "../package-form";
 
 export default async function NewPackagePage() {
+  await requireAdminPage();
   const services = await prisma.service.findMany({ orderBy: { sortOrder: "asc" } });
   const serviceOptions = services.map((s) => ({ value: s.slug, label: s.title }));
 

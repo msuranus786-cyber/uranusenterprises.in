@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { services } from "@/lib/data";
+import type { Service } from "@/lib/data";
 import { whatsappLink } from "@/lib/whatsapp";
 import { submitEnquiry } from "@/app/actions";
+import { track } from "./analytics";
 import { WhatsAppIcon, CheckIcon } from "./icons";
 
 type Errors = Partial<Record<"name" | "phone" | "service" | "requirement", string>>;
@@ -11,7 +12,15 @@ type Errors = Partial<Record<"name" | "phone" | "service" | "requirement", strin
 const inputClass =
   "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition-colors placeholder:text-slate-400 focus:border-brand-400 focus:ring-2 focus:ring-brand-100";
 
-export function EnquiryForm({ defaultService }: { defaultService?: string }) {
+export function EnquiryForm({
+  services,
+  whatsappNumber,
+  defaultService,
+}: {
+  services: Service[];
+  whatsappNumber: string;
+  defaultService?: string;
+}) {
   const [form, setForm] = useState({
     name: "",
     phone: "",
@@ -58,13 +67,18 @@ export function EnquiryForm({ defaultService }: { defaultService?: string }) {
       });
     } catch {}
 
-    const link = whatsappLink({
-      service: form.service,
-      name: form.name,
-      phone: form.phone,
-      location: form.location,
-      requirement: form.requirement,
-    });
+    track("enquiry_submit", { service: form.service });
+
+    const link = whatsappLink(
+      {
+        service: form.service,
+        name: form.name,
+        phone: form.phone,
+        location: form.location,
+        requirement: form.requirement,
+      },
+      whatsappNumber,
+    );
     window.open(link, "_blank", "noopener,noreferrer");
     setSent(true);
   };
