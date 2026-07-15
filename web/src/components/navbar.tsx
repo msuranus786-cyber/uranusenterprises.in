@@ -52,10 +52,10 @@ export function Navbar({
       }`}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-2.5" aria-label="Uranus Enterprise home">
+        <Link href="/" className="flex items-center gap-2.5" aria-label="Uranus Enterprises home">
           <Image
-            src="/logo.png"
-            alt="Ms.Uranus Nanofix"
+            src="/logo.jpg"
+            alt="Uranus Enterprises"
             width={48}
             height={48}
             priority
@@ -63,10 +63,10 @@ export function Navbar({
           />
           <span className="flex flex-col leading-tight">
             <span className="text-base font-extrabold tracking-tight text-brand-900">
-              Uranus Enterprise
+              Uranus Enterprises
             </span>
             <span className="text-[11px] font-medium uppercase tracking-[0.16em] text-brand-600">
-              Nanofix · Chennai
+              Chennai
             </span>
           </span>
         </Link>

@@ -18,11 +18,10 @@ export function localBusinessSchema(site: SiteSettings, reviews: Review[]) {
     "@type": "LocalBusiness",
     "@id": `${siteUrl}/#business`,
     name: site.name,
-    alternateName: site.brand,
     url: siteUrl,
-    image: `${siteUrl}/logo.png`,
+    image: `${siteUrl}/logo.jpg`,
     telephone: site.phoneDisplay,
-    email: site.email,
+    ...(site.email ? { email: site.email } : {}),
     priceRange: "₹₹",
     address: {
       "@type": "PostalAddress",

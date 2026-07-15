@@ -62,14 +62,14 @@ export type SiteSettings = {
 
 // Static fallback (used by client components and the chatbot)
 export const site: SiteSettings = {
-  name: "Uranus Enterprise",
-  brand: "Ms.Uranus Nanofix",
+  name: "Uranus Enterprises",
+  brand: "Uranus Enterprises",
   owner: "Mr. Barath",
   city: "Chennai",
   tagline: "Chennai's Trusted Technology & Security Partner",
   phoneDisplay: "+91 98417 70013",
   whatsappNumber: "919841770013",
-  email: "support@shan.enterprises",
+  email: "",
   address: "Chennai, Tamil Nadu, India",
   hours: "Mon – Sat · 9:30 AM – 8:00 PM",
   yearsExperience: 10,

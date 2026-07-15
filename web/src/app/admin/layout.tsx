@@ -3,7 +3,7 @@ import { connection } from "next/server";
 import { AdminSidebar } from "./sidebar";
 
 export const metadata: Metadata = {
-  title: { default: "Admin · Uranus Enterprise", template: "%s · Admin" },
+  title: { default: "Admin · Uranus Enterprises", template: "%s · Admin" },
   robots: "noindex, nofollow",
 };
 

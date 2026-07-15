@@ -15,7 +15,7 @@ import {
 export const metadata: Metadata = {
   title: "Contact Us",
   description:
-    "Get in touch with Uranus Enterprise in Chennai for CCTV, biometric, computer service, networking and home automation. Enquire on WhatsApp.",
+    "Get in touch with Uranus Enterprises in Chennai for CCTV, biometric, computer service, networking and home automation. Enquire on WhatsApp.",
   alternates: { canonical: "/contact" },
 };
 
@@ -27,7 +27,7 @@ export default async function ContactPage() {
     { icon: MailIcon, label: "Email", value: site.email },
     { icon: MapPinIcon, label: "Location", value: site.address },
     { icon: ClockIcon, label: "Hours", value: site.hours },
-  ];
+  ].filter((d) => d.value);
 
   return (
     <>

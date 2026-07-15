@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     template: `%s · ${site.name}`,
   },
   description:
-    "Uranus Enterprise provides CCTV installation, biometric access control, computer & laptop service, networking and home automation across Chennai. Free site survey. Enquire on WhatsApp.",
+    "Uranus Enterprises provides CCTV installation, biometric access control, computer & laptop service, networking and home automation across Chennai. Free site survey. Enquire on WhatsApp.",
   keywords: [
     "CCTV installation Chennai",
     "biometric service Chennai",

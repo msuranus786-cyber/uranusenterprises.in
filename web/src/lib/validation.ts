@@ -69,7 +69,7 @@ export const settingsSchema = z.object({
     .string()
     .trim()
     .regex(/^[0-9]{10,15}$/, "Digits only, with country code (e.g. 9198xxxxxxx)"),
-  email: z.string().trim().email().max(200),
+  email: z.string().trim().email().max(200).optional().or(z.literal("")),
   address: z.string().trim().max(300),
   hours: z.string().trim().max(120),
   yearsExperience: z.number().int().min(0).max(100),

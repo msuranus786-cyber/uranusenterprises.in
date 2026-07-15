@@ -57,7 +57,7 @@ export function SettingsForm({ settings }: { settings: Settings }) {
         <div className="grid gap-5 sm:grid-cols-2">
           <FormField label="Phone (display)" name="phoneDisplay" defaultValue={settings?.phoneDisplay} required />
           <FormField label="WhatsApp Number" name="whatsappNumber" defaultValue={settings?.whatsappNumber} required placeholder="919841770013" />
-          <FormField label="Email" name="email" type="email" defaultValue={settings?.email} required />
+          <FormField label="Email" name="email" type="email" defaultValue={settings?.email} />
           <FormField label="Address" name="address" defaultValue={settings?.address} required />
         </div>
         <div className="mt-5">

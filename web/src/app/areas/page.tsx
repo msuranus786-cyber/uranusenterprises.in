@@ -10,7 +10,7 @@ import { WhatsAppIcon, MapPinIcon, ArrowRightIcon } from "@/components/icons";
 export const metadata: Metadata = {
   title: "Areas We Serve in Chennai",
   description:
-    "Uranus Enterprise installs CCTV, biometric systems, networking and home automation across Chennai — Tambaram, Chromepet, Pallavaram, Velachery, T. Nagar, Anna Nagar, Porur and Adyar.",
+    "Uranus Enterprises installs CCTV, biometric systems, networking and home automation across Chennai — Tambaram, Chromepet, Pallavaram, Velachery, T. Nagar, Anna Nagar, Porur and Adyar.",
   alternates: { canonical: "/areas" },
 };
 

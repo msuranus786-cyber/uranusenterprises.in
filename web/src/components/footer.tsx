@@ -24,14 +24,14 @@ export async function Footer() {
           <div>
             <div className="flex items-center gap-2.5">
               <Image
-                src="/logo.png"
-                alt="Ms.Uranus Nanofix"
+                src="/logo.jpg"
+                alt="Uranus Enterprises"
                 width={44}
                 height={44}
                 className="h-11 w-11 rounded-lg bg-white object-contain p-1"
               />
               <span className="text-lg font-extrabold text-white">
-                Uranus Enterprise
+                Uranus Enterprises
               </span>
             </div>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-slate-400">
@@ -108,15 +108,17 @@ export async function Footer() {
                   {site.phoneDisplay}
                 </a>
               </li>
-              <li className="flex items-center gap-2.5">
-                <MailIcon className="h-4 w-4 shrink-0 text-brand-300" />
-                <a
-                  href={`mailto:${site.email}`}
-                  className="text-slate-400 transition-colors hover:text-white"
-                >
-                  {site.email}
-                </a>
-              </li>
+              {site.email && (
+                <li className="flex items-center gap-2.5">
+                  <MailIcon className="h-4 w-4 shrink-0 text-brand-300" />
+                  <a
+                    href={`mailto:${site.email}`}
+                    className="text-slate-400 transition-colors hover:text-white"
+                  >
+                    {site.email}
+                  </a>
+                </li>
+              )}
               <li className="flex items-center gap-2.5">
                 <ClockIcon className="h-4 w-4 shrink-0 text-brand-300" />
                 <span className="text-slate-400">{site.hours}</span>

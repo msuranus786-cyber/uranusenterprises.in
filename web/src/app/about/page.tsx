@@ -14,7 +14,7 @@ import {
 export const metadata: Metadata = {
   title: "About Us",
   description:
-    "Uranus Enterprise is a Chennai-based technology and security company offering CCTV, biometric, computer service, networking and home automation.",
+    "Uranus Enterprises is a Chennai-based technology and security company offering CCTV, biometric, computer service, networking and home automation.",
   alternates: { canonical: "/about" },
 };
 
@@ -34,7 +34,7 @@ export default async function AboutPage() {
     <>
       <PageHeader
         crumbs={[{ label: "About" }]}
-        title="About Uranus Enterprise"
+        title="About Uranus Enterprises"
         subtitle={`${site.city}'s trusted partner for security and technology — built on honest work and long-term relationships.`}
       />
 
@@ -48,7 +48,7 @@ export default async function AboutPage() {
             />
             <div className="mt-5 space-y-4 text-base leading-relaxed text-slate-600">
               <p>
-                Uranus Enterprise has spent over {site.yearsExperience} years helping
+                Uranus Enterprises has spent over {site.yearsExperience} years helping
                 homes and businesses across {site.city} stay secure and connected.
                 From a single CCTV camera to a fully automated smart home, we bring
                 the same care to every project.

@@ -1,6 +1,6 @@
-# Uranus Enterprise — Website & Admin Portal
+# Uranus Enterprises — Website & Admin Portal
 
-Lead-generation platform for Uranus Enterprise (Chennai): CCTV installation, biometric access, computer service, networking/site works and home automation. Customers browse services and enquire on WhatsApp; the owner manages everything from `/admin`.
+Lead-generation platform for Uranus Enterprises (Chennai): CCTV installation, biometric access, computer service, networking/site works and home automation. Customers browse services and enquire on WhatsApp; the owner manages everything from `/admin`.
 
 **Production domain:** https://www.uranusenterprises.in
 
