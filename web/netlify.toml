@@ -1,7 +1,13 @@
 # Netlify deployment (free tier allows commercial use, unlike Vercel Hobby).
 # Site settings → set env vars: DATABASE_URL, ADMIN_SECRET, NEXT_PUBLIC_SITE_URL,
-# NEXT_PUBLIC_GA_ID. The Next.js runtime plugin is auto-detected, declared here
-# explicitly for reproducibility.
+# NEXT_PUBLIC_GA_ID, NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION. The Next.js runtime
+# plugin is auto-detected, declared here explicitly for reproducibility.
+#
+# IMPORTANT (2026-07-22): NEXT_PUBLIC_SITE_URL must be the apex domain
+# ("https://uranusenterprises.in", no www) — www redirects to it with a 301,
+# so pointing this at www makes every canonical tag, sitemap URL and JSON-LD
+# URL resolve through a redirect instead of the live URL. If Netlify's
+# dashboard still has the www version set, update it and trigger a redeploy.
 
 [build]
   command = "npm run build"

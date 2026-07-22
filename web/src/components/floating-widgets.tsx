@@ -76,6 +76,24 @@ export function FloatingWidgets({ site, services, packages }: BotContext) {
   const [input, setInput] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
 
+  // Attention nudge: most visitors never notice a plain round chat button.
+  // Show a dismissible hint bubble + badge once, a few seconds after load,
+  // and retire it permanently as soon as the visitor engages.
+  const [hintVisible, setHintVisible] = useState(false);
+  const [hintRetired, setHintRetired] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!hintRetired) setHintVisible(true);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [hintRetired]);
+
+  const retireHint = () => {
+    setHintVisible(false);
+    setHintRetired(true);
+  };
+
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, chatOpen]);
@@ -110,9 +128,11 @@ export function FloatingWidgets({ site, services, packages }: BotContext) {
 
   return (
     <>
-      {/* Chat panel */}
+      {/* Chat panel — bottom-36 clears the full floating-button stack below
+          (WhatsApp button + gap + chat toggle) so the panel never overlaps
+          the send button in its own footer. */}
       <div
-        className={`fixed bottom-24 right-4 z-50 w-[min(92vw,22rem)] origin-bottom-right transition-all duration-300 sm:right-6 ${
+        className={`fixed bottom-36 right-4 z-50 w-[min(92vw,22rem)] origin-bottom-right transition-all duration-300 sm:right-6 ${
           chatOpen
             ? "pointer-events-auto translate-y-0 scale-100 opacity-100"
             : "pointer-events-none translate-y-4 scale-95 opacity-0"
@@ -210,13 +230,42 @@ export function FloatingWidgets({ site, services, packages }: BotContext) {
 
       {/* Floating buttons */}
       <div className="fixed bottom-5 right-4 z-50 flex flex-col items-end gap-3 sm:right-6">
-        <button
-          onClick={() => setChatOpen((v) => !v)}
-          aria-label="Open chat assistant"
-          className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-700 text-white shadow-lg transition-all hover:scale-110 hover:bg-brand-800 active:scale-95"
-        >
-          {chatOpen ? <CloseIcon className="h-6 w-6" /> : <ChatIcon className="h-6 w-6" />}
-        </button>
+        <div className="relative">
+          {/* Attention hint — appears once, a few seconds after load */}
+          <div
+            className={`absolute bottom-1 right-full mr-3 w-max max-w-[13rem] origin-bottom-right rounded-2xl rounded-br-sm bg-brand-950 px-3.5 py-2.5 text-xs font-medium text-white shadow-xl transition-all duration-300 ${
+              hintVisible && !chatOpen
+                ? "translate-y-0 scale-100 opacity-100"
+                : "pointer-events-none translate-y-2 scale-95 opacity-0"
+            }`}
+          >
+            <button
+              onClick={retireHint}
+              aria-label="Dismiss"
+              className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-white text-brand-900 shadow"
+            >
+              <CloseIcon className="h-3 w-3" />
+            </button>
+            👋 Need help? Chat with us — we reply instantly.
+          </div>
+
+          <button
+            onClick={() => {
+              setChatOpen((v) => !v);
+              retireHint();
+            }}
+            aria-label="Open chat assistant"
+            className="relative flex h-12 w-12 items-center justify-center rounded-full bg-brand-700 text-white shadow-lg transition-all hover:scale-110 hover:bg-brand-800 active:scale-95"
+          >
+            {chatOpen ? <CloseIcon className="h-6 w-6" /> : <ChatIcon className="h-6 w-6" />}
+            {!chatOpen && !hintRetired && (
+              <span className="absolute -right-0.5 -top-0.5 flex h-3.5 w-3.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-gold opacity-75" />
+                <span className="relative inline-flex h-3.5 w-3.5 rounded-full bg-gold" />
+              </span>
+            )}
+          </button>
+        </div>
         <a
           href={whatsappLink({}, site.whatsappNumber)}
           target="_blank"

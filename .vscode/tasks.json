@@ -1,0 +1,19 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start OpenCode server",
+      "type": "shell",
+      "command": "& \"$env:APPDATA\\npm\\node_modules\\opencode-ai\\bin\\opencode.exe\" serve --port 53252 --hostname 127.0.0.1 --pure",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    }
+  ]
+}

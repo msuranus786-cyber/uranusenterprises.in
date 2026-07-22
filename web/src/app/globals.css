@@ -102,6 +102,9 @@ body {
     transform: none;
     transition: none;
   }
+  [class*="animate-"] {
+    animation: none !important;
+  }
 }
 
 /* Brand-tinted selection */

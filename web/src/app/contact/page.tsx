@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getSiteSettings, getServices } from "@/lib/db";
 import { whatsappLink } from "@/lib/whatsapp";
+import { departmentEmails } from "@/lib/data";
 import { PageHeader } from "@/components/page-header";
 import { EnquiryForm } from "@/components/enquiry-form";
 import { Reveal } from "@/components/reveal";
@@ -23,8 +24,30 @@ export default async function ContactPage() {
   const [site, services] = await Promise.all([getSiteSettings(), getServices()]);
 
   const details = [
-    { icon: PhoneIcon, label: "Phone", value: site.phoneDisplay },
-    { icon: MailIcon, label: "Email", value: site.email },
+    {
+      icon: PhoneIcon,
+      label: "Phone",
+      value: site.phoneDisplay,
+      href: `tel:${site.phoneDisplay.replace(/[^0-9+]/g, "")}`,
+    },
+    {
+      icon: MailIcon,
+      label: "General / Support",
+      value: site.email,
+      href: site.email ? `mailto:${site.email}` : undefined,
+    },
+    {
+      icon: MailIcon,
+      label: "Service Enquiries",
+      value: departmentEmails.services,
+      href: `mailto:${departmentEmails.services}`,
+    },
+    {
+      icon: MailIcon,
+      label: "Careers / HR",
+      value: departmentEmails.hr,
+      href: `mailto:${departmentEmails.hr}`,
+    },
     { icon: MapPinIcon, label: "Location", value: site.address },
     { icon: ClockIcon, label: "Hours", value: site.hours },
   ].filter((d) => d.value);
@@ -70,7 +93,16 @@ export default async function ContactPage() {
                         <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
                           {d.label}
                         </p>
-                        <p className="text-sm font-medium text-slate-800">{d.value}</p>
+                        {d.href ? (
+                          <a
+                            href={d.href}
+                            className="text-sm font-medium text-slate-800 hover:text-brand-700"
+                          >
+                            {d.value}
+                          </a>
+                        ) : (
+                          <p className="text-sm font-medium text-slate-800">{d.value}</p>
+                        )}
                       </div>
                     </li>
                   ))}

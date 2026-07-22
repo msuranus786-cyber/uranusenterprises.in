@@ -10,6 +10,7 @@ import {
   getSiteSettings,
 } from "@/lib/db";
 import { whatsappLink } from "@/lib/whatsapp";
+import { getServiceSeo } from "@/lib/service-seo";
 import { JsonLd } from "@/components/json-ld";
 import {
   serviceSchema,
@@ -35,9 +36,10 @@ export async function generateMetadata(
   const { slug } = await props.params;
   const service = await getService(slug);
   if (!service) return {};
+  const seo = getServiceSeo(slug, { ...service, city: "Chennai" });
   return {
-    title: service.title,
-    description: `${service.tagline} ${service.description}`,
+    title: seo.title,
+    description: seo.description,
     alternates: { canonical: `/services/${slug}` },
   };
 }

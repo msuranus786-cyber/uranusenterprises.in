@@ -74,12 +74,21 @@ export function HomeIcon(props: IconProps) {
   );
 }
 
+export function ElectricalIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z" />
+    </svg>
+  );
+}
+
 const map: Record<IconKey, (p: IconProps) => React.JSX.Element> = {
   cctv: CctvIcon,
   biometric: BiometricIcon,
   computer: ComputerIcon,
   network: NetworkIcon,
   home: HomeIcon,
+  electrical: ElectricalIcon,
 };
 
 export function ServiceIcon({

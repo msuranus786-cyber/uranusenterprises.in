@@ -3,7 +3,7 @@ CREATE TABLE "site_settings" (
     "id" INTEGER NOT NULL DEFAULT 1,
     "name" TEXT NOT NULL DEFAULT 'Uranus Enterprise',
     "brand" TEXT NOT NULL DEFAULT 'Ms.Uranus Nanofix',
-    "owner" TEXT NOT NULL DEFAULT 'Mr. Barath',
+    "owner" TEXT NOT NULL DEFAULT 'Mr. Bharath',
     "city" TEXT NOT NULL DEFAULT 'Chennai',
     "tagline" TEXT NOT NULL DEFAULT 'Chennai''s Trusted Technology & Security Partner',
     "phoneDisplay" TEXT NOT NULL DEFAULT '+91 98765 43210',

@@ -28,7 +28,7 @@ npm run dev
 | `DATABASE_URL` | prod | Neon Postgres connection string |
 | `ADMIN_SECRET` | **prod (enforced)** | JWT signing secret; app throws at startup if unset in production |
 | `ADMIN_SEED_PASSWORD` | seeding | Admin password created/rotated by `prisma db seed` (min 10 chars) |
-| `ADMIN_SEED_EMAIL` | optional | Admin email (default `admin@uranus.in`) |
+| `ADMIN_SEED_EMAIL` | optional | Admin email (default `admin@uranusenterprises.in`) |
 | `NEXT_PUBLIC_SITE_URL` | prod | Canonical origin for metadata/sitemap/robots/JSON-LD |
 | `NEXT_PUBLIC_GA_ID` | optional | GA4 measurement ID; analytics disabled when unset |
 

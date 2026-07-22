@@ -1,10 +1,11 @@
 import type { NextConfig } from "next";
 
 // 'unsafe-inline' is required for Next.js hydration scripts and the GA snippet;
-// external scripts remain restricted to self + Google Tag Manager.
+// 'unsafe-eval' is required in dev mode for React's debugging features.
+const isDev = process.env.NODE_ENV === "development";
 const csp = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com",
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://www.googletagmanager.com`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: https:",
   "font-src 'self' data:",

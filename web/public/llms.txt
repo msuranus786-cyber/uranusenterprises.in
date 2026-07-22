@@ -1,12 +1,13 @@
 # Uranus Enterprises
 
-> Chennai-based technology and security services company (owner: Mr. Barath). CCTV installation, biometric access control, computer & laptop service, networking/site works, and home automation for homes, shops, offices and small factories.
+> Chennai-based technology and security services company (owner: Mr. Bharath). CCTV installation, biometric access control, computer & laptop service, networking/site works, electrical works, and home automation for homes, shops, offices and small factories.
 
 ## Business facts
 
 - Website: https://www.uranusenterprises.in
 - Phone: +91 98417 70013
 - WhatsApp: https://wa.me/919841770013
+- Email: support@uranusenterprises.in
 - Location: Chennai, Tamil Nadu, India
 - Hours: Monday–Saturday, 9:30 AM – 8:00 PM IST
 - No online payments — enquiries via WhatsApp, free site survey, quote before any work.
@@ -18,6 +19,7 @@
 - Computer & laptop service (repairs, RAM/SSD upgrades, doorstep): from ₹499. https://www.uranusenterprises.in/services/computer-services
 - Networking & site works (CAT5/CAT6 cabling, UPS, electrical): from ₹1,999. https://www.uranusenterprises.in/services/site-works
 - Home automation (smart switches, lighting, gate automation): from ₹2,499. https://www.uranusenterprises.in/services/home-automation
+- Electrical works (wiring & rewiring, MCB & panel upgrades, earthing & surge protection): from ₹1,499. https://www.uranusenterprises.in/services/electrical-works
 
 ## Areas served
 

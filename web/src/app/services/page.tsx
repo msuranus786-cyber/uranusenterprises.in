@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getSiteSettings, getServices } from "@/lib/db";
 import { whatsappLink } from "@/lib/whatsapp";
+import { departmentEmails } from "@/lib/data";
 import { PageHeader } from "@/components/page-header";
 import { ServiceCard } from "@/components/service-card";
 import { Reveal } from "@/components/reveal";
@@ -44,6 +45,15 @@ export default async function ServicesPage() {
               </h2>
               <p className="mt-1 text-sm text-slate-600">
                 Tell us about your space and we&apos;ll recommend the right solution — free of charge.
+              </p>
+              <p className="mt-1 text-sm text-slate-600">
+                Or email{" "}
+                <a
+                  href={`mailto:${departmentEmails.services}`}
+                  className="font-medium text-brand-700 hover:underline"
+                >
+                  {departmentEmails.services}
+                </a>
               </p>
             </div>
             <a

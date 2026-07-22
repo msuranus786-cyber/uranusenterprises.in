@@ -10,7 +10,7 @@ const prisma = new PrismaClient({ adapter });
 
 async function main() {
   // Admin user — password must come from the environment; never hardcode or log it.
-  const adminEmail = process.env.ADMIN_SEED_EMAIL || "admin@uranus.in";
+  const adminEmail = process.env.ADMIN_SEED_EMAIL || "admin@uranusenterprises.in";
   const rawPassword = process.env.ADMIN_SEED_PASSWORD;
   if (!rawPassword || rawPassword.length < 10) {
     throw new Error(
@@ -25,7 +25,7 @@ async function main() {
     create: {
       email: adminEmail,
       passwordHash: adminPassword,
-      name: "Mr. Barath",
+      name: "Mr. Bharath",
       role: "admin",
     },
   });
@@ -38,12 +38,12 @@ async function main() {
     create: {
       name: "Uranus Enterprises",
       brand: "Uranus Enterprises",
-      owner: "Mr. Barath",
+      owner: "Mr. Bharath",
       city: "Chennai",
       tagline: "Chennai's Trusted Technology & Security Partner",
       phoneDisplay: "+91 98417 70013",
       whatsappNumber: "919841770013",
-      email: "",
+      email: "support@uranusenterprises.in",
       address: "Chennai, Tamil Nadu, India",
       hours: "Mon – Sat · 9:30 AM – 8:00 PM",
       yearsExperience: 10,
@@ -178,6 +178,31 @@ async function main() {
         "Home security automation",
       ],
       sortOrder: 4,
+    },
+    {
+      slug: "electrical-works",
+      title: "Electrical Works",
+      category: "Infrastructure",
+      icon: "electrical",
+      gradient: "from-brand-600 to-brand-950",
+      tagline: "Powering your space, safely.",
+      description:
+        "Complete electrical solutions for homes, offices and commercial spaces — from new wiring and panel upgrades to earthing, surge protection and annual maintenance. Licensed electricians, quality materials, clean workmanship.",
+      startingPrice: 1499,
+      available: true,
+      features: [
+        "Wiring & rewiring",
+        "MCB & panel upgrades",
+        "Earthing & surge protection",
+        "Annual maintenance contracts",
+      ],
+      offerings: [
+        "House wiring & rewiring",
+        "Electrical panel upgrades",
+        "Earthing & lightning arrestors",
+        "Generator & inverter wiring",
+      ],
+      sortOrder: 5,
     },
   ];
 

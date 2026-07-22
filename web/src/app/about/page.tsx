@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { getSiteSettings } from "@/lib/db";
 import { whatsappLink } from "@/lib/whatsapp";
+import { departmentEmails } from "@/lib/data";
 import { PageHeader } from "@/components/page-header";
 import { Reveal } from "@/components/reveal";
+import { Counter } from "@/components/counter";
 import { SectionHeading } from "@/components/section";
 import {
   WhatsAppIcon,
@@ -58,6 +60,16 @@ export default async function AboutPage() {
                 service, networking and home automation — so you have just one
                 reliable partner for all your technology needs.
               </p>
+              <p>
+                For direct enquiries to our founder, write to{" "}
+                <a
+                  href={`mailto:${departmentEmails.ceo}`}
+                  className="font-medium text-brand-700 hover:underline"
+                >
+                  {departmentEmails.ceo}
+                </a>
+                .
+              </p>
             </div>
             <a
               href={whatsappLink({}, site.whatsappNumber)}
@@ -80,9 +92,9 @@ export default async function AboutPage() {
               ].map((s) => (
                 <div
                   key={s.label}
-                  className="rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm"
+                  className="rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
                 >
-                  <p className="text-3xl font-extrabold text-brand-700">{s.value}</p>
+                  <Counter value={s.value} className="text-3xl font-extrabold text-brand-700" />
                   <p className="mt-1 text-sm text-slate-500">{s.label}</p>
                 </div>
               ))}

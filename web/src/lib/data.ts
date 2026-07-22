@@ -2,7 +2,7 @@
 // Server Components should use `@/lib/db` for live database queries.
 // Client Components still import types and the `inr` formatter from here.
 
-export type IconKey = "cctv" | "biometric" | "computer" | "network" | "home";
+export type IconKey = "cctv" | "biometric" | "computer" | "network" | "home" | "electrical";
 
 export type Service = {
   id?: number;
@@ -60,16 +60,26 @@ export type SiteSettings = {
   projects: number;
 };
 
+// Official department email addresses. Fixed (not admin-editable, unlike
+// `site.email` which is the general/support address stored in the DB).
+// `admin` is the backend login credential only — never render it publicly.
+export const departmentEmails = {
+  support: "support@uranusenterprises.in",
+  services: "services@uranusenterprises.in",
+  hr: "hr@uranusenterprises.in",
+  ceo: "ceo@uranusenterprises.in",
+} as const;
+
 // Static fallback (used by client components and the chatbot)
 export const site: SiteSettings = {
   name: "Uranus Enterprises",
   brand: "Uranus Enterprises",
-  owner: "Mr. Barath",
+  owner: "Mr. Bharath",
   city: "Chennai",
   tagline: "Chennai's Trusted Technology & Security Partner",
   phoneDisplay: "+91 98417 70013",
   whatsappNumber: "919841770013",
-  email: "",
+  email: "support@uranusenterprises.in",
   address: "Chennai, Tamil Nadu, India",
   hours: "Mon – Sat · 9:30 AM – 8:00 PM",
   yearsExperience: 10,
@@ -196,6 +206,30 @@ export const services: Service[] = [
       "Smart lighting",
       "Gate automation",
       "Home security automation",
+    ],
+  },
+  {
+    slug: "electrical-works",
+    title: "Electrical Works",
+    category: "Infrastructure",
+    icon: "electrical",
+    gradient: "from-brand-600 to-brand-950",
+    tagline: "Powering your space, safely.",
+    description:
+      "Complete electrical solutions for homes, offices and commercial spaces — from new wiring and panel upgrades to earthing, surge protection and annual maintenance. Licensed electricians, quality materials, clean workmanship.",
+    startingPrice: 1499,
+    available: true,
+    features: [
+      "Wiring & rewiring",
+      "MCB & panel upgrades",
+      "Earthing & surge protection",
+      "Annual maintenance contracts",
+    ],
+    offerings: [
+      "House wiring & rewiring",
+      "Electrical panel upgrades",
+      "Earthing & lightning arrestors",
+      "Generator & inverter wiring",
     ],
   },
 ];

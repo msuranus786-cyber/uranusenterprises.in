@@ -26,7 +26,7 @@ export const serviceSchema = z.object({
   title: z.string().trim().min(2).max(120),
   slug,
   category: z.string().trim().min(2).max(60),
-  icon: z.enum(["cctv", "biometric", "computer", "network", "home"]),
+  icon: z.enum(["cctv", "biometric", "computer", "network", "home", "electrical"]),
   gradient: z.string().trim().max(80),
   tagline: z.string().trim().max(160),
   description: z.string().trim().min(10).max(4000),

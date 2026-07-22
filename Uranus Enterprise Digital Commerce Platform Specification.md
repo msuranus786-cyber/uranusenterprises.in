@@ -4,7 +4,7 @@
 # <a name="project-overview"></a>1. Project Overview
 ## <a name="client"></a>Client
 **Business Name:** Uranus Enterprise\
-**Owner:** Mr. Barath\
+**Owner:** Mr. Bharath\
 **Existing Website:** https://www.msuranus.in/
 
 -----
@@ -59,7 +59,7 @@ The website should help Uranus Enterprise:
 - Convert visitors into WhatsApp enquiries
 - Allow owner to update everything without developers
 
-Mr. Barath must be able to manage:
+Mr. Bharath must be able to manage:
 
 - Services
 - Products
@@ -846,6 +846,6 @@ Admin Side:
 # <a name="development-rule"></a>Development Rule
 Build this as a professional SaaS-style digital commerce platform.
 
-The owner Mr. Barath must be able to operate the entire website without developer support.
+The owner Mr. Bharath must be able to operate the entire website without developer support.
 
 The final product must be Vercel-native, scalable, secure, fast, and SEO optimized.

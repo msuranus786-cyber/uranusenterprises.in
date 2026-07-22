@@ -3,6 +3,7 @@ import { inr } from "@/lib/data";
 import { getSiteSettings, getServices, getAllPackages, getAllReviews } from "@/lib/db";
 import { whatsappLink } from "@/lib/whatsapp";
 import { Reveal } from "@/components/reveal";
+import { Counter } from "@/components/counter";
 import { SectionHeading } from "@/components/section";
 import { ServiceCard } from "@/components/service-card";
 import { PackageCard } from "@/components/package-card";
@@ -64,11 +65,24 @@ export default async function HomePage() {
             maskImage: "linear-gradient(to bottom, black, transparent 75%)",
           }}
         />
+        {/* Ambient floating accents — subtle life on an otherwise static hero */}
+        <div
+          className="absolute -left-24 top-0 -z-10 h-72 w-72 animate-float rounded-full bg-brand-300/25 blur-3xl"
+          aria-hidden
+        />
+        <div
+          className="absolute right-0 top-1/3 -z-10 h-64 w-64 animate-float rounded-full bg-gold/15 blur-3xl"
+          style={{ animationDelay: "-3s" }}
+          aria-hidden
+        />
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 pb-16 pt-12 sm:px-6 lg:grid-cols-2 lg:gap-8 lg:px-8 lg:pb-24 lg:pt-20">
           <div>
             <Reveal>
               <span className="inline-flex items-center gap-2 rounded-full border border-brand-200 bg-white px-3.5 py-1.5 text-xs font-semibold text-brand-700 shadow-sm">
-                <span className="h-2 w-2 rounded-full bg-green-500" />
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
+                </span>
                 {site.tagline}
               </span>
             </Reveal>
@@ -159,7 +173,10 @@ export default async function HomePage() {
         <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 py-10 sm:px-6 lg:grid-cols-4 lg:px-8">
           {stats.map((s, i) => (
             <Reveal key={s.label} delay={i * 80} className="text-center">
-              <p className="text-3xl font-extrabold text-white sm:text-4xl">{s.value}</p>
+              <Counter
+                value={s.value}
+                className="text-3xl font-extrabold text-white sm:text-4xl"
+              />
               <p className="mt-1 text-sm text-brand-200">{s.label}</p>
             </Reveal>
           ))}

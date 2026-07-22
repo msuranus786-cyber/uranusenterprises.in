@@ -29,6 +29,14 @@ export function localBusinessSchema(site: SiteSettings, reviews: Review[]) {
       addressRegion: "Tamil Nadu",
       addressCountry: "IN",
     },
+    // City-centre coordinates — no precise street address is stored in
+    // SiteSettings yet. Replace with the exact office location if/when one
+    // is added; it meaningfully strengthens local-pack / "near me" ranking.
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: 13.0827,
+      longitude: 80.2707,
+    },
     openingHoursSpecification: {
       "@type": "OpeningHoursSpecification",
       dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
