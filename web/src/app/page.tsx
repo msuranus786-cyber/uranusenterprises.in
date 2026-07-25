@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { inr } from "@/lib/data";
 import { getSiteSettings, getServices, getAllPackages, getAllReviews } from "@/lib/db";
@@ -8,8 +9,10 @@ import { SectionHeading } from "@/components/section";
 import { ServiceCard } from "@/components/service-card";
 import { PackageCard } from "@/components/package-card";
 import { ReviewCard, Stars } from "@/components/review-card";
+import { Marquee } from "@/components/marquee";
+import { FeedbackModal } from "@/components/feedback-modal";
+import { serviceImages } from "@/lib/service-images";
 import {
-  ServiceIcon,
   WhatsAppIcon,
   ArrowRightIcon,
   ShieldIcon,
@@ -41,7 +44,7 @@ export default async function HomePage() {
     getSiteSettings(),
     getServices(),
     getAllPackages(),
-    getAllReviews(),
+    getAllReviews(15),
   ]);
 
   const stats = [
@@ -142,16 +145,24 @@ export default async function HomePage() {
                   <Link
                     key={s.slug}
                     href={`/services/${s.slug}`}
-                    className={`group rounded-2xl border border-white/10 bg-gradient-to-br ${s.gradient} p-5 text-white shadow-lg transition-transform hover:scale-[1.03] ${
+                    className={`group relative aspect-square overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br ${s.gradient} p-5 text-white shadow-lg transition-transform hover:scale-[1.03] ${
                       i % 2 === 1 ? "translate-y-6" : ""
                     }`}
                   >
-                    <ServiceIcon
-                      name={s.icon}
-                      className="h-10 w-10 text-white/90 transition-transform group-hover:scale-110"
-                    />
-                    <p className="mt-4 text-sm font-bold">{s.title}</p>
-                    <p className="mt-1 text-xs text-white/70">from {inr(s.startingPrice)}</p>
+                    {serviceImages[s.slug] && (
+                      <Image
+                        src={serviceImages[s.slug]}
+                        alt=""
+                        fill
+                        sizes="(min-width: 1024px) 20vw, 40vw"
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-black/5" />
+                    <div className="relative">
+                      <p className="mt-4 text-sm font-bold">{s.title}</p>
+                      <p className="mt-1 text-xs text-white/70">from {inr(s.startingPrice)}</p>
+                    </div>
                   </Link>
                 ))}
               </div>
@@ -168,20 +179,38 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ===== Stats ===== */}
-      <section className="border-y border-slate-100 bg-brand-950">
-        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 py-10 sm:px-6 lg:grid-cols-4 lg:px-8">
-          {stats.map((s, i) => (
-            <Reveal key={s.label} delay={i * 80} className="text-center">
-              <Counter
-                value={s.value}
-                className="text-3xl font-extrabold text-white sm:text-4xl"
-              />
-              <p className="mt-1 text-sm text-brand-200">{s.label}</p>
-            </Reveal>
-          ))}
-        </div>
-      </section>
+      {/* ===== Stats — horizontally auto-scrolling; only the first block
+           renders real Counters (assistive tech hears the numbers once),
+           the rest are static decorative duplicates for a seamless loop. ===== */}
+      <Reveal>
+        <section className="overflow-hidden border-y border-slate-100 bg-brand-950">
+          <div className="group overflow-hidden">
+            <div className="flex w-max animate-marquee items-center gap-16 py-10 group-hover:[animation-play-state:paused]">
+              <div className="flex shrink-0 items-center gap-16">
+                {stats.map((s) => (
+                  <div key={s.label} className="w-44 text-center">
+                    <Counter
+                      value={s.value}
+                      className="text-3xl font-extrabold text-white sm:text-4xl"
+                    />
+                    <p className="mt-1 text-sm text-brand-200">{s.label}</p>
+                  </div>
+                ))}
+              </div>
+              {Array.from({ length: 7 }).map((_, rep) => (
+                <div key={rep} aria-hidden="true" className="flex shrink-0 items-center gap-16">
+                  {stats.map((s) => (
+                    <div key={s.label} className="w-44 text-center">
+                      <p className="text-3xl font-extrabold text-white sm:text-4xl">{s.value}</p>
+                      <p className="mt-1 text-sm text-brand-200">{s.label}</p>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      </Reveal>
 
       {/* ===== Services ===== */}
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
@@ -275,13 +304,31 @@ export default async function HomePage() {
               subtitle="Real words from real customers across Chennai."
             />
           </Reveal>
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {reviews.map((r, i) => (
-              <Reveal key={r.name} delay={(i % 3) * 90}>
-                <ReviewCard review={r} />
-              </Reveal>
-            ))}
-          </div>
+          {reviews.length >= 6 ? (
+            <Reveal delay={100} className="mt-12">
+              <Marquee repeat={2}>
+                {reviews.map((r) => (
+                  <div key={r.id} className="w-[320px]">
+                    <ReviewCard review={r} />
+                  </div>
+                ))}
+              </Marquee>
+            </Reveal>
+          ) : (
+            <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {reviews.map((r, i) => (
+                <Reveal key={r.id} delay={(i % 3) * 90}>
+                  <ReviewCard review={r} />
+                </Reveal>
+              ))}
+            </div>
+          )}
+          <Reveal delay={160} className="mt-10 text-center">
+            <p className="text-sm text-slate-600">Had a great experience with us?</p>
+            <div className="mt-3 inline-block">
+              <FeedbackModal services={services} />
+            </div>
+          </Reveal>
         </div>
       </section>
 

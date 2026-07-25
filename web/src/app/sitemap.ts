@@ -6,12 +6,14 @@ import { siteUrl } from "@/lib/site-url";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const services = await getServices();
 
-  const routes = ["", "/services", "/faq", "/areas", "/about", "/contact"].map((path) => ({
-    url: `${siteUrl}${path}`,
-    lastModified: new Date(),
-    changeFrequency: "monthly" as const,
-    priority: path === "" ? 1 : 0.8,
-  }));
+  const routes = ["", "/services", "/faq", "/areas", "/about", "/contact", "/feedback"].map(
+    (path) => ({
+      url: `${siteUrl}${path}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: path === "" ? 1 : path === "/feedback" ? 0.5 : 0.8,
+    }),
+  );
 
   const serviceRoutes = services.map((s) => ({
     url: `${siteUrl}/services/${s.slug}`,

@@ -91,17 +91,36 @@ model Package {
 model Review {
   id        Int      @id @default(autoincrement())
   name      String
-  location  String
+  location  String?
+  phone     String?
   rating    Int
   comment   String
-  approved  Boolean  @default(true)
+  approved  Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  service     Service @relation(fields: [serviceSlug], references: [slug])
-  serviceSlug String
+  service     Service? @relation(fields: [serviceSlug], references: [slug], onDelete: SetNull)
+  serviceSlug String?
+
+  photos ReviewPhoto[]
 
   @@map("reviews")
+}
+
+// ──────────────────────────────────────────────
+// Customer-submitted photos attached to a review
+// ──────────────────────────────────────────────
+
+model ReviewPhoto {
+  id          Int      @id @default(autoincrement())
+  data        Bytes
+  contentType String
+  createdAt   DateTime @default(now())
+
+  review   Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  reviewId Int
+
+  @@map("review_photos")
 }
 
 // ──────────────────────────────────────────────

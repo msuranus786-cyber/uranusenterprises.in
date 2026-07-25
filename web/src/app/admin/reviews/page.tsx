@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 import { requireAdminPage } from "@/lib/auth";
 import { ReviewActions } from "./review-actions";
@@ -6,7 +7,10 @@ export default async function AdminReviewsPage() {
   await requireAdminPage();
   const reviews = await prisma.review.findMany({
     orderBy: { createdAt: "desc" },
-    include: { service: { select: { title: true } } },
+    include: {
+      service: { select: { title: true } },
+      photos: { select: { id: true } },
+    },
   });
 
   const pending = reviews.filter((r) => !r.approved);
@@ -34,14 +38,45 @@ export default async function AdminReviewsPage() {
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
                       <span className="font-medium text-slate-900">{r.name}</span>
-                      <span className="text-xs text-slate-400">·</span>
-                      <span className="text-xs text-slate-500">{r.location}</span>
+                      {r.location && (
+                        <>
+                          <span className="text-xs text-slate-400">·</span>
+                          <span className="text-xs text-slate-500">{r.location}</span>
+                        </>
+                      )}
+                      {r.phone && (
+                        <>
+                          <span className="text-xs text-slate-400">·</span>
+                          <span className="text-xs text-slate-500">{r.phone}</span>
+                        </>
+                      )}
                     </div>
                     <p className="mt-1 text-sm text-slate-600">&quot;{r.comment}&quot;</p>
                     <div className="mt-2 flex items-center gap-3 text-xs text-slate-400">
                       <span>{"★".repeat(r.rating)}{"☆".repeat(5 - r.rating)}</span>
-                      <span>{r.service.title}</span>
+                      <span>{r.service?.title ?? "General feedback"}</span>
                     </div>
+                    {r.photos.length > 0 && (
+                      <div className="mt-3 flex gap-2">
+                        {r.photos.map((p) => (
+                          <a
+                            key={p.id}
+                            href={`/api/photos/${p.id}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="block h-16 w-16 overflow-hidden rounded-lg border border-slate-200"
+                          >
+                            <Image
+                              src={`/api/photos/${p.id}`}
+                              alt=""
+                              width={64}
+                              height={64}
+                              className="h-full w-full object-cover"
+                            />
+                          </a>
+                        ))}
+                      </div>
+                    )}
                   </div>
                   <ReviewActions id={r.id} status="pending" />
                 </div>
@@ -62,14 +97,39 @@ export default async function AdminReviewsPage() {
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
                     <span className="font-medium text-slate-900">{r.name}</span>
-                    <span className="text-xs text-slate-400">·</span>
-                    <span className="text-xs text-slate-500">{r.location}</span>
+                    {r.location && (
+                      <>
+                        <span className="text-xs text-slate-400">·</span>
+                        <span className="text-xs text-slate-500">{r.location}</span>
+                      </>
+                    )}
                   </div>
                   <p className="mt-1 text-sm text-slate-600">&quot;{r.comment}&quot;</p>
                   <div className="mt-2 flex items-center gap-3 text-xs text-slate-400">
                     <span>{"★".repeat(r.rating)}{"☆".repeat(5 - r.rating)}</span>
-                    <span>{r.service.title}</span>
+                    <span>{r.service?.title ?? "General feedback"}</span>
                   </div>
+                  {r.photos.length > 0 && (
+                    <div className="mt-3 flex gap-2">
+                      {r.photos.map((p) => (
+                        <a
+                          key={p.id}
+                          href={`/api/photos/${p.id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block h-16 w-16 overflow-hidden rounded-lg border border-slate-200"
+                        >
+                          <Image
+                            src={`/api/photos/${p.id}`}
+                            alt=""
+                            width={64}
+                            height={64}
+                            className="h-full w-full object-cover"
+                          />
+                        </a>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 <ReviewActions id={r.id} status="approved" />
               </div>

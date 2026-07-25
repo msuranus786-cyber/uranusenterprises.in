@@ -38,10 +38,11 @@ export type Package = {
 export type Review = {
   id?: number;
   name: string;
-  location: string;
+  location: string | null;
   rating: number;
   comment: string;
-  serviceSlug: string;
+  serviceSlug: string | null;
+  photos?: { id: number; contentType: string }[];
 };
 
 export type SiteSettings = {

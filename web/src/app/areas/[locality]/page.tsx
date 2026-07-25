@@ -49,7 +49,7 @@ export default async function AreaPage(props: PageProps<"/areas/[locality]">) {
   });
 
   const localReviews = reviews
-    .filter((r) => r.location.toLowerCase().includes(area.name.toLowerCase()))
+    .filter((r) => r.location?.toLowerCase().includes(area.name.toLowerCase()))
     .slice(0, 3);
 
   const cta = whatsappLink(

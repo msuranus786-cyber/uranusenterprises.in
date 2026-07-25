@@ -44,3 +44,12 @@ export async function allowEnquiry(): Promise<boolean> {
     allow(`enq-h:${ip}`, 10, 60 * 60 * 1000)
   );
 }
+
+/** 3 per 10 minutes and 5 per day per IP — stricter than enquiries since this accepts file uploads. */
+export async function allowFeedback(): Promise<boolean> {
+  const ip = await clientIp();
+  return (
+    allow(`fb-10m:${ip}`, 3, 10 * 60 * 1000) &&
+    allow(`fb-d:${ip}`, 5, 24 * 60 * 60 * 1000)
+  );
+}

@@ -87,6 +87,9 @@ export async function Footer() {
               <li>
                 <Link href="/contact" className="text-slate-400 hover:text-white">Contact</Link>
               </li>
+              <li>
+                <Link href="/feedback" className="text-slate-400 hover:text-white">Share Feedback</Link>
+              </li>
             </ul>
           </div>
 

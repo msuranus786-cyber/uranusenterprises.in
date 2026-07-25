@@ -315,6 +315,7 @@ async function main() {
       comment:
         "Installed 4 CCTV cameras at my shop. Neat wiring and they set up everything on my phone. Very professional team.",
       serviceSlug: "cctv-installation",
+      approved: true,
     },
     {
       name: "Priya M.",
@@ -323,6 +324,7 @@ async function main() {
       comment:
         "Got a biometric attendance system for our office. Works perfectly and the reports save us so much time.",
       serviceSlug: "biometric-access",
+      approved: true,
     },
     {
       name: "Karthik R.",
@@ -331,6 +333,7 @@ async function main() {
       comment:
         "My laptop was very slow. They upgraded to SSD and added RAM — feels like a new machine. Honest pricing.",
       serviceSlug: "computer-services",
+      approved: true,
     },
     {
       name: "Deepa V.",
@@ -339,6 +342,7 @@ async function main() {
       comment:
         "Smart switches and gate automation installed at home. The app control is so convenient. Recommended.",
       serviceSlug: "home-automation",
+      approved: true,
     },
     {
       name: "Mohammed A.",
@@ -347,6 +351,7 @@ async function main() {
       comment:
         "Full office network cabling with CAT6 and UPS backup. Clean work and finished on time.",
       serviceSlug: "site-works",
+      approved: true,
     },
     {
       name: "Lakshmi N.",
@@ -355,6 +360,7 @@ async function main() {
       comment:
         "Reliable and friendly. They explained everything clearly before installing the cameras. Great service.",
       serviceSlug: "cctv-installation",
+      approved: true,
     },
   ];
 

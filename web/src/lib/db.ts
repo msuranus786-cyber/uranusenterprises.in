@@ -73,6 +73,7 @@ export const getReviews = cache(
           ...(serviceSlug ? { serviceSlug } : {}),
         },
         orderBy: { createdAt: "desc" },
+        include: { photos: { select: { id: true, contentType: true } } },
       });
       if (rows.length) return rows;
     } catch {}
@@ -83,11 +84,13 @@ export const getReviews = cache(
   }
 );
 
-export const getAllReviews = cache(async (): Promise<Review[]> => {
+export const getAllReviews = cache(async (take?: number): Promise<Review[]> => {
   try {
     const rows = await prisma.review.findMany({
       where: { approved: true },
       orderBy: { createdAt: "desc" },
+      include: { photos: { select: { id: true, contentType: true } } },
+      ...(take ? { take } : {}),
     });
     if (rows.length) return rows;
   } catch {}

@@ -24,6 +24,26 @@ export function ReviewCard({ review }: { review: Review }) {
       <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-slate-700">
         “{review.comment}”
       </blockquote>
+      {review.photos && review.photos.length > 0 && (
+        <div className="mt-4 flex gap-2">
+          {review.photos.map((p) => (
+            <a
+              key={p.id}
+              href={`/api/photos/${p.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block h-14 w-14 overflow-hidden rounded-lg border border-slate-200"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element -- small fixed-size thumbnail, not worth next/image's overhead here */}
+              <img
+                src={`/api/photos/${p.id}`}
+                alt=""
+                className="h-full w-full object-cover"
+              />
+            </a>
+          ))}
+        </div>
+      )}
       <figcaption className="mt-5 flex items-center gap-3 border-t border-slate-100 pt-4">
         <span className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-100 text-sm font-bold text-brand-700">
           {initials}

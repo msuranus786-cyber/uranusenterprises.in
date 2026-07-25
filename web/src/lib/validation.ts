@@ -17,6 +17,20 @@ export const enquirySchema = z.object({
   requirement: z.string().trim().max(2000).optional().or(z.literal("")),
 });
 
+export const feedbackSchema = z.object({
+  name: z.string().trim().min(2).max(100),
+  location: z.string().trim().max(120).optional().or(z.literal("")),
+  phone: z
+    .string()
+    .trim()
+    .regex(/^[0-9+\-\s]{8,20}$/, "Invalid phone number")
+    .optional()
+    .or(z.literal("")),
+  serviceSlug: slug.optional().or(z.literal("")),
+  rating: z.number().int().min(1).max(5),
+  comment: z.string().trim().min(10).max(2000),
+});
+
 export const loginSchema = z.object({
   email: z.string().trim().email().max(200),
   password: z.string().min(1).max(200),

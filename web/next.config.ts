@@ -20,6 +20,14 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: __dirname,
   },
+  experimental: {
+    // Feedback-form photo uploads go through a Server Action. Kept below
+    // Netlify's ~6MB function payload ceiling so this friendlier limit trips
+    // first, surfaced as a normal {success:false} error instead of a 413.
+    serverActions: {
+      bodySizeLimit: "5mb",
+    },
+  },
   async headers() {
     return [
       {

@@ -23,7 +23,9 @@ import { ReviewCard, Stars } from "@/components/review-card";
 import { ServiceCard } from "@/components/service-card";
 import { Reveal } from "@/components/reveal";
 import { SectionHeading } from "@/components/section";
-import { ServiceIcon, WhatsAppIcon, CheckIcon } from "@/components/icons";
+import { WhatsAppIcon, CheckIcon } from "@/components/icons";
+import { serviceImages } from "@/lib/service-images";
+import Image from "next/image";
 
 export async function generateStaticParams() {
   const services = await getServices();
@@ -88,15 +90,17 @@ export default async function ServiceDetailPage(
             <div
               className={`relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-3xl bg-gradient-to-br ${service.gradient} shadow-xl`}
             >
-              <div
-                className="absolute inset-0 opacity-25"
-                style={{
-                  backgroundImage:
-                    "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.6) 1px, transparent 0)",
-                  backgroundSize: "24px 24px",
-                }}
-              />
-              <ServiceIcon name={service.icon} className="h-36 w-36 text-white/90 drop-shadow-lg" />
+              {serviceImages[service.slug] && (
+                <Image
+                  src={serviceImages[service.slug]}
+                  alt={service.title}
+                  fill
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                  priority
+                  className="object-cover"
+                />
+              )}
+              <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/0 to-black/0" />
               <span className="absolute left-5 top-5 rounded-full bg-white/15 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-white backdrop-blur-sm">
                 {service.category}
               </span>
