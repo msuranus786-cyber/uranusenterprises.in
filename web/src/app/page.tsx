@@ -9,7 +9,7 @@ import { SectionHeading } from "@/components/section";
 import { ServiceCard } from "@/components/service-card";
 import { PackageCard } from "@/components/package-card";
 import { ReviewCard, Stars } from "@/components/review-card";
-import { Marquee } from "@/components/marquee";
+import { ReviewSlider } from "@/components/review-slider";
 import { FeedbackModal } from "@/components/feedback-modal";
 import { serviceImages } from "@/lib/service-images";
 import {
@@ -304,25 +304,13 @@ export default async function HomePage() {
               subtitle="Real words from real customers across Chennai."
             />
           </Reveal>
-          {reviews.length >= 6 ? (
-            <Reveal delay={100} className="mt-12">
-              <Marquee repeat={2}>
-                {reviews.map((r) => (
-                  <div key={r.id} className="w-[320px]">
-                    <ReviewCard review={r} />
-                  </div>
-                ))}
-              </Marquee>
-            </Reveal>
-          ) : (
-            <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {reviews.map((r, i) => (
-                <Reveal key={r.id} delay={(i % 3) * 90}>
-                  <ReviewCard review={r} />
-                </Reveal>
+          <Reveal delay={100} className="mt-12">
+            <ReviewSlider>
+              {reviews.map((r) => (
+                <ReviewCard key={r.id} review={r} />
               ))}
-            </div>
-          )}
+            </ReviewSlider>
+          </Reveal>
           <Reveal delay={160} className="mt-10 text-center">
             <p className="text-sm text-slate-600">Had a great experience with us?</p>
             <div className="mt-3 inline-block">
