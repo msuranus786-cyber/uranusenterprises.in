@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import type { Service } from "@/lib/data";
 import { FeedbackForm } from "./feedback-form";
 import { CloseIcon } from "./icons";
@@ -36,7 +37,9 @@ export function FeedbackModal({
         {label}
       </button>
 
-      {open && (
+      {/* Portal to <body>: the trigger sits inside a transformed <Reveal>, which would
+          otherwise trap this fixed overlay behind later sections on mobile. */}
+      {open && createPortal(
         <div
           role="dialog"
           aria-modal="true"
@@ -66,7 +69,8 @@ export function FeedbackModal({
               <FeedbackForm services={services} />
             </div>
           </div>
-        </div>
+        </div>,
+        document.body,
       )}
     </>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import type { Review } from "@/lib/data";
 import { StarIcon, CloseIcon } from "./icons";
 
@@ -81,7 +82,8 @@ export function ReviewCard({ review }: { review: Review }) {
         </div>
       </button>
 
-      {open && (
+      {/* Portal to <body> so the fixed overlay escapes the transformed slider/<Reveal>. */}
+      {open && createPortal(
         <div
           role="dialog"
           aria-modal="true"
@@ -140,7 +142,8 @@ export function ReviewCard({ review }: { review: Review }) {
               </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body,
       )}
     </>
   );
